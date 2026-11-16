@@ -1,0 +1,52 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Nexprint",
+        "description": "Choose how you want to sign in to your Nexprint account.",
+        "menu_options": {
+          "password": "Email and password",
+          "token": "Session token (Google Sign-In / manual)"
+        }
+      },
+      "password": {
+        "title": "Sign in with Email & Password",
+        "description": "Enter your Elegoo / Nexprint credentials. First-time Nexprint users must accept the initial authorization prompt on nexprint.com in a browser first.",
+        "data": {
+          "email": "Email",
+          "password": "Password",
+          "scan_interval": "Poll interval (minutes)",
+          "accept_terms": "I have read and agree to the Nexprint Terms of Use and Privacy Policy"
+        }
+      },
+      "token": {
+        "title": "Sign in with Session Token",
+        "description": "Paste the access_token (and optional refresh_token) captured from nexprint.com.",
+        "data": {
+          "access_token": "Access token",
+          "refresh_token": "Refresh token (optional)",
+          "scan_interval": "Poll interval (minutes)",
+          "accept_terms": "I have read and agree to the Nexprint Terms of Use and Privacy Policy"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to reach nexprint.com (check network or VPN routing).",
+      "invalid_auth": "Invalid credentials, expired token, or first-time authorization not yet accepted on nexprint.com.",
+      "terms_not_accepted": "You must agree to the Nexprint Terms of Use and Privacy Policy to sign in."
+    },
+    "abort": {
+      "already_configured": "This Nexprint account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Update Nexprint Options",
+        "data": {
+          "scan_interval": "Poll interval (minutes)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "domain": "nexprint",
+  "name": "Nexprint",
+  "codeowners": [
+    "@peggleg"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/peggleg/ha-nexprint",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/peggleg/ha-nexprint/issues",
+  "requirements": [],
+  "version": "0.1.1"
+}
