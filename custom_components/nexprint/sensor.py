@@ -101,6 +101,9 @@ SENSORS: tuple[NexprintSensorDescription, ...] = (
         icon="mdi:star-circle",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda d: d.points_balance,
+        attr_fn=lambda d: {
+            "creation_points": d.creation_points,
+        },
     ),
 )
 
