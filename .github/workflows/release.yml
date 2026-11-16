@@ -3,7 +3,7 @@ name: Release Integration
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+' # Triggers on tags like 0.1.2 or 0.1.3 without a 'v'
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   release:
@@ -17,11 +17,18 @@ jobs:
 
       - name: Build Zip Archive
         run: |
-          mkdir -p build/nexprint
-          cp -r custom_components/nexprint/* build/nexprint/
-          cd build
-          zip -r ../nexprint.zip nexprint
-          cd ..
+          # Create a staging folder structure that mirrors the exact directory name
+          mkdir -p nexprint
+          
+          # Copy your integration files into the staging nexprint folder
+          # Make sure this path points correctly to where your manifest.json lives in the repo
+          cp -r custom_components/nexprint/* nexprint/
+          
+          # Zip the nexprint folder directly so it becomes the root of the archive
+          zip -r nexprint.zip nexprint
+          
+          # Clean up the staging directory
+          rm -rf nexprint
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
