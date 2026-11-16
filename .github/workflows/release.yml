@@ -1,30 +1,76 @@
-name: Release Integration
+name: Release
 
 on:
-  push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [published]
+
+permissions: {}
 
 jobs:
-  release:
-    name: Package and Release
+  release_zip_file:
+    name: Prepare release asset
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
+      id-token: write
+      attestations: write
     steps:
-      - name: Checkout Code
+      - name: Check out repository
         uses: actions/checkout@v4
-
-      - name: Build Zip Archive
-        run: |
-          # Create a dedicated nexprint directory and move files into it
-          mkdir nexprint
-          find . -maxdepth 1 ! -name '.' ! -name 'nexprint' ! -name '.git' ! -name '.github' -exec mv {} nexprint/ \;
-          
-          # Create the zip archive from the parent directory so nexprint/ is the root
-          zip -r nexprint.zip nexprint
-
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v2
         with:
-          files: nexprint.zip
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check manifest version matches release tag
+        run: |
+          set -e
+          MANIFEST_VERSION=$(python3 -c "import json; print(json.load(open('custom_components/nexprint/manifest.json'))['version'])")
+          TAG_VERSION="${GITHUB_REF_NAME}"
+          if [ "$MANIFEST_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::manifest.json version ($MANIFEST_VERSION) does not match release tag ($TAG_VERSION)"
+            exit 1
+          fi
+          echo "manifest.json version $MANIFEST_VERSION matches tag $TAG_VERSION"
+
+      - name: Create zip
+        run: |
+          cd custom_components/nexprint
+          zip nexprint.zip -r ./
+
+      - name: List zip contents (for debugging in the Actions log)
+        run: unzip -l custom_components/nexprint/nexprint.zip
+
+      - name: Validate manifest.json is present and valid inside the zip
+        run: |
+          set -e
+          rm -rf /tmp/zip_check
+          mkdir /tmp/zip_check
+          unzip -q custom_components/nexprint/nexprint.zip -d /tmp/zip_check
+
+          if [ ! -f /tmp/zip_check/manifest.json ]; then
+            echo "::error::manifest.json not found at the root of the built zip"
+            exit 1
+          fi
+
+          python3 -c "import json; json.load(open('/tmp/zip_check/manifest.json'))" || {
+            echo "::error::manifest.json is not valid JSON"
+            exit 1
+          }
+
+          echo "Validation passed: manifest.json present at zip root and valid JSON"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ./custom_components/nexprint/nexprint.zip
+
+      - name: Upload zip to release
+        run: gh release upload "${GITHUB_REF_NAME}" ./custom_components/nexprint/nexprint.zip#nexprint.zip --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
