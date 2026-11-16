@@ -1,4 +1,6 @@
 # Nexprint for Home Assistant
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+<a href="https://buymeacoffee.com/peggleg"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="20"></a>
 
 A custom Home Assistant integration for [Nexprint](https://www.nexprint.com/) (Elegoo's 3D model platform), designed for installation via HACS / Home Assistant Marketplace.
 
