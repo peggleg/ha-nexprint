@@ -25,7 +25,7 @@ In the Network filter search box (top left of the Network tab), type:
   - **Terms Acceptance**: Enforces explicit acceptance of the Nexprint Terms of Use and Privacy Policy during setup.
 - **Profile, Creator & Points Sensors**:
   - `Profile` (`sensor.nexprint_<user>_profile`): Nickname, User ID, email, country, configured printers, and avatar URL.
-  - `Creator points` (`sensor.nexprint_<user>_creator_points`): Live points balance (`availableCredits` / `userCreditNow`).
+  - `Creator points` (`sensor.nexprint_<user>_creator_points`): Live points balance
   - `Published models` (`sensor.nexprint_<user>_published_models`): Total published models (`userPublishedModelCount`).
   - `Followers` (`sensor.nexprint_<user>_followers`): Total followers (`userFollowerCount`) and following count.
   - `Total likes` (`sensor.nexprint_<user>_total_likes`): Total likes (`userGetStarPeopleCount`) and favorites (`userGetFavoritePeopleCount`).
