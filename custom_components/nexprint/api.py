@@ -80,6 +80,7 @@ class NexprintAccountData:
     total_downloads: int
     total_prints: int
     points_balance: int
+    creation_points: int
     unread_messages_total: int
     unread_system: int
     unread_comments: int
@@ -383,9 +384,8 @@ class NexprintApiClient:
         ]
 
         # Prefer points-server availableCredits; fall back to dashboard userCreditNow
-        available_credits = points_data.get("availableCredits")
-        if available_credits is None:
-            available_credits = stats.get("userCreditNow") or 0
+        creator_points = int(stats.get("userCreditNow") or 0)
+        creation_points = int(points_data.get("availableCredits") or 0)
 
         sys_unread = int(msg_data.get("systemMessageUnreadNum") or 0)
         fol_unread = int(msg_data.get("followingMessageUnreadNum") or 0)
@@ -412,7 +412,8 @@ class NexprintApiClient:
             total_favorites=int(stats.get("userGetFavoritePeopleCount") or 0),
             total_downloads=int(stats.get("userGetDownloadCount") or 0),
             total_prints=int(stats.get("userGetPrintCount") or 0),
-            points_balance=int(available_credits),
+            points_balance=creator_points,
+            creation_points=creation_points,
             unread_messages_total=(
                 sys_unread + fol_unread + com_unread + act_unread + mod_unread
             ),
