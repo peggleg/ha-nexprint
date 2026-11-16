@@ -6,7 +6,7 @@
         "description": "Choose how you want to sign in to your Nexprint account.",
         "menu_options": {
           "password": "Email and password",
-          "token": "Session token (Google Sign-In / manual)"
+          "token": "Google Session token"
         }
       },
       "password": {
@@ -20,8 +20,8 @@
         }
       },
       "token": {
-        "title": "Sign in with Session Token",
-        "description": "Paste the access_token (and optional refresh_token) captured from nexprint.com.",
+        "title": "Sign in with Google Session Token",
+        "description": "Paste the access_token captured from nexprint.com. For instructions on how to retrieve the tokens, click the ? above.",
         "data": {
           "access_token": "Access token",
           "refresh_token": "Refresh token (optional)",

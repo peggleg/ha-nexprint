@@ -8,7 +8,20 @@ A custom Home Assistant integration for [Nexprint](https://www.nexprint.com/) (E
 
 - **Account Authentication**:
   - **Email & Password**: Uses Elegoo's hybrid AES-128-CBC + RSA-PKCS1v15 authentication flow with automatic OAuth token refresh.
-   - Set password under `Profile` > `Settings`
+  - Set password under `Profile` > `Settings`
+  - **Terms Acceptance**: Enforces explicit acceptance of the Nexprint Terms of Use and Privacy Policy during setup.
+- **Account Authentication using Google Session Token**:
+  - Open your browser and log in to Nexprint using your Google account (or email).
+  - Open Developer Tools (Press F12 or right-click anywhere and select Inspect).
+  - Click on the Network tab at the top of the DevTools panel.
+  - In the Network filter search box (top left of the Network tab), type: /token
+  - Refresh the page
+  - Look for a request named token (the URL path will end in /gateway/api/v1/account-center-server/token).
+  - Click on that request, then select the Response tab on the right side.
+  - Look at the JSON output. You will see your tokens right there (`access_token` & `refresh_token`)
+  - **Terms Acceptance**: Enforces explicit acceptance of the Nexprint Terms of Use and Privacy Policy during setup.
+
+In the Network filter search box (top left of the Network tab), type:
   - **Terms Acceptance**: Enforces explicit acceptance of the Nexprint Terms of Use and Privacy Policy during setup.
 - **Profile, Creator & Points Sensors**:
   - `Profile` (`sensor.nexprint_<user>_profile`): Nickname, User ID, email, country, configured printers, and avatar URL.
