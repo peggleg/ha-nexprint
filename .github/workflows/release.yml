@@ -1,0 +1,29 @@
+name: Release Integration
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+' # Triggers on tags like 0.1.2 or 0.1.3 without a 'v'
+
+jobs:
+  release:
+    name: Package and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Zip Archive
+        run: |
+          mkdir -p build/nexprint
+          cp -r custom_components/nexprint/* build/nexprint/
+          cd build
+          zip -r ../nexprint.zip nexprint
+          cd ..
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: nexprint.zip
