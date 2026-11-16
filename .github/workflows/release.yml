@@ -17,13 +17,11 @@ jobs:
 
       - name: Build Zip Archive
         run: |
-          # Create a folder named nexprint and copy repository contents into it
+          # Create a dedicated nexprint directory and move files into it
           mkdir nexprint
-          
-          # Move everything (except the nexprint folder itself, git metadata, and workflows) into the nexprint folder
           find . -maxdepth 1 ! -name '.' ! -name 'nexprint' ! -name '.git' ! -name '.github' -exec mv {} nexprint/ \;
           
-          # Zip the nexprint folder so the archive contains nexprint/manifest.json
+          # Create the zip archive from the parent directory so nexprint/ is the root
           zip -r nexprint.zip nexprint
 
       - name: Upload Release Asset
