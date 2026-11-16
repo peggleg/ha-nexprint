@@ -17,20 +17,14 @@ jobs:
 
       - name: Build Zip Archive
         run: |
-          # Create a temporary staging directory
-          mkdir -p staging/nexprint
+          # Create a folder named nexprint and copy repository contents into it
+          mkdir nexprint
           
-          # Copy your integration files into the staging nexprint folder, 
-          # excluding git files, workflows, and build artifacts
-          rsync -av --exclude='staging' --exclude='.git' --exclude='.github' --exclude='nexprint.zip' ./ staging/nexprint/
+          # Move everything (except the nexprint folder itself, git metadata, and workflows) into the nexprint folder
+          find . -maxdepth 1 ! -name '.' ! -name 'nexprint' ! -name '.git' ! -name '.github' -exec mv {} nexprint/ \;
           
-          # Create the zip archive from inside the staging directory so it has the correct root folder structure
-          cd staging
-          zip -r ../nexprint.zip nexprint
-          cd ..
-          
-          # Clean up staging
-          rm -rf staging
+          # Zip the nexprint folder so the archive contains nexprint/manifest.json
+          zip -r nexprint.zip nexprint
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
