@@ -17,7 +17,16 @@ jobs:
 
       - name: Build Zip Archive
         run: |
-          # Zip the nexprint folder directly from the repository root
+          # Create a staging directory and copy the integration files into it
+          mkdir -p nexprint
+          
+          # Copy all relevant integration files into the staging folder
+          # (adjust or exclude non-integration files like .git, .github, workflows, etc.)
+          cp manifest.json __init__.py api.py sensor.py coordinator.py config_flow.py const.py services.yaml nexprint/
+          cp -r translations nexprint/
+          cp -r brand nexprint/
+          
+          # Zip the staging folder so the archive contains nexprint/manifest.json
           zip -r nexprint.zip nexprint
 
       - name: Upload Release Asset
