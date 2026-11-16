@@ -17,18 +17,8 @@ jobs:
 
       - name: Build Zip Archive
         run: |
-          # Create a staging folder structure that mirrors the exact directory name
-          mkdir -p nexprint
-          
-          # Copy your integration files into the staging nexprint folder
-          # Make sure this path points correctly to where your manifest.json lives in the repo
-          cp -r custom_components/nexprint/* nexprint/
-          
-          # Zip the nexprint folder directly so it becomes the root of the archive
+          # Zip the nexprint folder directly from the repository root
           zip -r nexprint.zip nexprint
-          
-          # Clean up the staging directory
-          rm -rf nexprint
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
